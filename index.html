@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>АНТИСКУКА | МЕМ-КОЛОДА</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505;
+            --card-bg: #121212;
+            --accent: #ffde00;
+            --gemini-blue: #4285f4;
+            --text: #ffffff;
+            --gray: #b0b0b0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding-bottom: 50px;
+        }
+
+        h1, h2, .btn-main { font-family: 'Montserrat', sans-serif; }
+
+        .container { max-width: 500px; margin: 0 auto; padding: 20px; }
+
+        header { text-align: center; padding: 40px 0; border-bottom: 4px solid var(--accent); margin-bottom: 30px; }
+        h1 { font-size: 2.2rem; margin: 0; color: var(--accent); text-transform: uppercase; }
+        .author-tag { color: var(--gray); font-size: 0.8rem; letter-spacing: 2px; }
+
+        .section {
+            background: var(--card-bg);
+            border-radius: 25px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            border: 1px solid #1f1f1f;
+        }
+
+        h2 { font-size: 1.2rem; color: var(--accent); margin-top: 0; text-transform: uppercase; }
+
+        /* Счётчик на 4 игрока */
+        .scoreboard { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .player { background: #1a1a1a; padding: 15px; border-radius: 20px; text-align: center; border: 1px solid #333; }
+        .score-val { font-size: 2rem; font-weight: 900; display: block; margin: 5px 0; color: var(--accent); }
+        .s-btn { 
+            background: #333; border: none; color: white; width: 40px; height: 40px; 
+            border-radius: 10px; font-size: 1.2rem; cursor: pointer; margin: 0 5px;
+        }
+        .s-btn:active { background: var(--accent); color: black; }
+
+        /* Генератор ситуаций */
+        .random-box { text-align: center; padding: 10px; }
+        #sit-text { font-style: italic; font-size: 1.1rem; min-height: 50px; display: block; margin-bottom: 15px; color: #eee; }
+        .btn-gen { 
+            background: var(--accent); border: none; padding: 12px 20px; border-radius: 15px; 
+            font-weight: 900; cursor: pointer; width: 100%; text-transform: uppercase;
+        }
+
+        /* Блок ИИ */
+        .ai-zone { border: 2px dashed var(--gemini-blue); background: rgba(66, 133, 244, 0.05); }
+        .ai-link {
+            display: block; text-align: center; background: var(--gemini-blue); color: white;
+            padding: 15px; border-radius: 15px; text-decoration: none; font-weight: bold; margin-top: 15px;
+        }
+
+        /* Правила */
+        .rules { font-size: 0.9rem; padding-left: 20px; }
+        .rules li { margin-bottom: 8px; }
+
+        footer { text-align: center; font-size: 0.7rem; color: #444; margin-top: 30px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>АНТИСКУКА</h1>
+        <div class="author-tag">CREATIVE BY @Nft_top3</div>
+    </header>
+
+    <div class="section">
+        <h2>СЛУЧАЙНАЯ СИТУАЦИЯ</h2>
+        <div class="random-box">
+            <span id="sit-text">Нажми, чтобы вытянуть карту...</span>
+            <button class="btn-gen" onclick="genSit()">ТЯНУТЬ КАРТУ</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>СЧЁТ ИГРЫ</h2>
+        <div class="scoreboard">
+            <div class="player">
+                <span>ПЛЕР 1</span>
+                <span class="score-val" id="p1">0</span>
+                <button class="s-btn" onclick="add('p1', 1)">+</button>
+                <button class="s-btn" onclick="add('p1', -1)">-</button>
+            </div>
+            <div class="player">
+                <span>ПЛЕР 2</span>
+                <span class="score-val" id="p2">0</span>
+                <button class="s-btn" onclick="add('p2', 1)">+</button>
+                <button class="s-btn" onclick="add('p2', -1)">-</button>
+            </div>
+            <div class="player">
+                <span>ПЛЕР 3</span>
+                <span class="score-val" id="p3">0</span>
+                <button class="s-btn" onclick="add('p3', 1)">+</button>
+                <button class="s-btn" onclick="add('p3', -1)">-</button>
+            </div>
+            <div class="player">
+                <span>ПЛЕР 4</span>
+                <span class="score-val" id="p4">0</span>
+                <button class="s-btn" onclick="add('p4', 1)">+</button>
+                <button class="s-btn" onclick="add('p4', -1)">-</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section ai-zone">
+        <h2>🤖 СУДЬЯ GEMINI</h2>
+        <p style="font-size: 0.85rem;">Если спорите, кто победил — фоткай мемы на столе и грузи в Gemini. Он выберет лучший вариант по юмору.</p>
+        <a href="https://gemini.google.com/" target="_blank" class="ai-link">ОТПРАВИТЬ ФОТО GEMINI</a>
+    </div>
+
+    <div class="section">
+        <h2>ПРАВИЛА</h2>
+        <ul class="rules">
+            <li>Раздайте по <b>4 мема</b> на руки.</li>
+            <li>Один игрок тянет ситуацию (или жми кнопку выше).</li>
+            <li>Все скидывают мем "в закрытую".</li>
+            <li>Самый смешной забирает балл.</li>
+            <li><b>ЭКСТРА:</b> Если мем подходит под 2 ситуации сразу — <b>+2 балла</b>.</li>
+        </ul>
+    </div>
+
+    <footer>
+        DESIGNED FOR @Nft_top3 | 2026
+    </footer>
+</div>
+
+<script>
+    // Массив ситуаций
+    const sits = [
+        "Когда училка говорит: «Это важно»",
+        "Когда урок длится вечность",
+        "Когда звонок уже должен был быть",
+        "Когда тебя внезапно вызывают",
+        "Когда ты всё понял за 5 минут",
+        "Когда друг не пришёл",
+        "Когда задали дз в конце урока",
+        "Когда училка смотрит прямо на тебя",
+        "Когда контрольная внезапно",
+        "Когда урок скучный, но предмет лёгкий",
+        "Когда ты считаешь секунды до звонка",
+        "Когда хочешь смеяться на уроке, но нельзя",
+        "Когда сказали «Контрольная работа»"
+    ];
+
+    function genSit() {
+        const text = document.getElementById('sit-text');
+        const rand = sits[Math.floor(Math.random() * sits.length)];
+        text.innerText = rand;
+    }
+
+    function add(id, val) {
+        let el = document.getElementById(id);
+        let score = parseInt(el.innerText) + val;
+        if (score >= 0) el.innerText = score;
+    }
+</script>
+
+</body>
+</html>
